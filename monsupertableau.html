@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style type="text/css">
         table {
             border-collapse: collapse;
@@ -15,6 +16,7 @@
             cursor: pointer;
         }
     </style>
+    
 </head>
 
 <body>
@@ -502,6 +504,60 @@
             </tr>
         </tfoot>
     </table>
+
+<script>
+    let clickElements = [];
+    let elements = document.getElementsByTagName("tr");
+    
+
+    function refreshSelectionText(count) {
+        let selectionText = document.getElementById("selection"); // On met cette ligne dans la fonction, car selectionText est nécessaire dans la fonction seulement
+        if(count > 1)
+            selectionText.innerText = count + " éléments sélectionnés";
+        else
+            selectionText.innerText = count + " élément sélectionné";
+    }	
+
+    function changeStyle(element, backgroundColor, fontWeight, border){
+    if(backgroundColor !== null){ // Au cas où un appel à la fonction aurait un paramètre null pour le backgroundColor
+        element.style.backgroundColor = backgroundColor;
+    }
+    if(fontWeight !== null){ // idem mais pour fontWeight
+        element.style.fontWeight = fontWeight;
+    }
+    if(border !== null){
+        element.style.border = border
+    }
+}
+
+
+
+    for(let i = 0;i<elements.length;i++){
+        let element = elements[i];
+        element.addEventListener("mouseover", function () {changeStyle(this, null, null, "1px solid #888");});
+        element.addEventListener("mouseout", function () {changeStyle(this, null, null, "")});
+
+        element.addEventListener("click", function(event){
+            let target = this;
+            let targetIndex = clickElements.indexOf(target);
+            if(targetIndex === -1){
+                changeStyle(target, "lightblue", "900", null)
+                
+                clickElements.push(target);
+                
+            }
+            else{
+                changeStyle(target, "white", "500", null)
+                
+                clickElements.splice(targetIndex,1);
+                
+            }
+
+            refreshSelectionText(clickElements.length)
+        });
+    }
+</script>
+
 
 
 
